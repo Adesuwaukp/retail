@@ -1,0 +1,14 @@
+{ FIXED [Customer Id] :MIN(DATETRUNC('quarter', [order date (DateOrders)]))}
+Number of orders per customer: { FIXED[Customer Id] : COUNTD([Order Id])}
+Sales Previous Year: INT([Year]=[Previous Year])* [Sales]
+Previous Year: [Latest Year]-1\
+Churn rate: ([Customer Last 6 months]- [Customer Last 3 months])/ [Customer Last 6 months]
+Churn rate 6 months: ([Customer Last 12 Months]- [Customer Last 6 months])/ [Customer Last 12 Months]
+Customer Last 3 months: WINDOW_SUM(COUNTD([Customer Id]),-2,0)
+Customer Last 6 months: WINDOW_SUM(COUNTD([Customer Id]),-5,0)
+Last 3 months: INDEX()<=3
+Last 6 months: INDEX()<=6
+Previous year sales: { FIXED : SUM(if YEAR([order date (DateOrders)])={MAX(YEAR([order date (DateOrders)]))-1} THEN[Sales] END)}
+Retention rate: COUNTD([Customer Id])/ SUM([Customers Per First Quarter])
+Sales lastest year: { FIXED : SUM(if YEAR([order date (DateOrders)])={MAX(YEAR([order date (DateOrders)]))}THEN[Sales] END)}
+t.test(orders$No.of.order, mu=100, alternative = "greater")
